@@ -1,4 +1,21 @@
-const URL_API = "TAKfycbyAHkYacvU6fR46i6qnW01yY1vOxNLRycAf3xInYmazVsr3xI-XNyaAtwivNe8E_X22";
+const URL_API = "AKfycbyAHkYacvU6fR46i6qnW01yY1vOxNLRycAf3xInYmazVsr3xI-XNyaAtwivNe8E_X22";
+
+// checklist.js
+
+function agregarFila(idTabla) {
+  const tabla = document.getElementById(idTabla);
+  const tbody = tabla.querySelector("tbody");
+  const fila = document.createElement("tr");
+
+  const columnas = tabla.querySelector("thead tr").children.length;
+  for (let i = 0; i < columnas; i++) {
+    const celda = document.createElement("td");
+    celda.contentEditable = "true";
+    fila.appendChild(celda);
+  }
+
+  tbody.appendChild(fila);
+}
 
 function cargarChecklist() {
   // Temas a revisar
@@ -20,14 +37,7 @@ function cargarChecklist() {
         tbody.appendChild(tr);
       });
 
-      // Agregar fila vacía editable
-      const filaVacia = document.createElement("tr");
-      for (let i = 0; i < 2; i++) {
-        const td = document.createElement("td");
-        td.contentEditable = "true";
-        filaVacia.appendChild(td);
-      }
-      tbody.appendChild(filaVacia);
+      agregarFila("tabla-revisar"); // Agrega la fila vacía editable
     });
 
   // Temas frecuentes
@@ -49,14 +59,7 @@ function cargarChecklist() {
         tbody.appendChild(tr);
       });
 
-      // Fila vacía editable (8 columnas)
-      const filaVacia = document.createElement("tr");
-      for (let i = 0; i < 8; i++) {
-        const td = document.createElement("td");
-        td.contentEditable = "true";
-        filaVacia.appendChild(td);
-      }
-      tbody.appendChild(filaVacia);
+      agregarFila("tabla-frecuentes"); // Agrega la fila vacía editable
     });
 
   // Fixes + fecha
@@ -81,17 +84,15 @@ function cargarChecklist() {
         tbody.appendChild(tr);
       });
 
-      // Fila vacía editable (2 columnas)
-      const filaVacia = document.createElement("tr");
-      for (let i = 0; i < 2; i++) {
-        const td = document.createElement("td");
-        td.contentEditable = "true";
-        filaVacia.appendChild(td);
-      }
-      tbody.appendChild(filaVacia);
-    })
-    .catch(err => console.warn("No se pudo leer la tabla de fixes todavía (no implementada)"));
+      agregarFila("tabla-fixes"); // Agrega la fila vacía editable
+    });
 }
+
+function guardarChecklist() {
+  // Implementación posterior
+  alert("Checklist guardado correctamente (funcionalidad pendiente de implementar)");
+}
+
 
 
 
