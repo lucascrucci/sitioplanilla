@@ -22,7 +22,10 @@
         </tr>
       </thead>
       <tbody>
-        <!-- Las filas se agregarán dinámicamente -->
+        <tr contenteditable="true">
+          <td></td>
+          <td></td>
+        </tr>
       </tbody>
     </table>
     <button type="button" onclick="agregarFila('tabla-revisar')">Agregar Fila</button>
@@ -44,7 +47,10 @@
         </tr>
       </thead>
       <tbody>
-        <!-- Las filas se agregarán dinámicamente -->
+        <tr contenteditable="true">
+          <td></td><td></td><td></td><td></td>
+          <td></td><td></td><td></td><td></td>
+        </tr>
       </tbody>
     </table>
     <button type="button" onclick="agregarFila('tabla-frecuentes')">Agregar Fila</button>
@@ -64,7 +70,10 @@
         </tr>
       </thead>
       <tbody>
-        <!-- Las filas se agregarán dinámicamente -->
+        <tr contenteditable="true">
+          <td></td>
+          <td></td>
+        </tr>
       </tbody>
     </table>
     <button type="button" onclick="agregarFila('tabla-fixes')">Agregar Fila</button>
@@ -74,7 +83,7 @@
 
   <!-- Script con funciones -->
   <script>
-    const URL_API = "https://script.google.com/macros/s/AKfycbyAHkYacvU6fR46i6qnW01yY1vOxNLRycAf3xInYmazVsr3xI-XNyaAtwivNe8E_X22/exec"; // Reemplazar con tu URL real
+    const URL_API = "https://script.google.com/macros/s/AKfycbyAHkYacvU6fR46i6qnW01yY1vOxNLRycAf3xInYmazVsr3xI-XNyaAtwivNe8E_X22/exec";
     window.onload = () => {
       cargarChecklist();
     };
@@ -82,6 +91,7 @@
   <script src="checklist.js"></script>
 </body>
 </html>
+
 
 
 
