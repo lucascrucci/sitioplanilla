@@ -1,7 +1,7 @@
 const URL_API = "https://script.google.com/macros/s/AKfycbyAHkYacvU6fR46i6qnW01yY1vOxNLRycAf3xInYmazVsr3xI-XNyaAtwivNe8E_X22/exec";
 
 // Agrega una fila editable al final de una tabla
-function agregarFila(idTabla) {
+function agregarFilaVacia(idTabla) {
   const tabla = document.getElementById(idTabla);
   const tbody = tabla.querySelector("tbody");
   const columnas = tabla.querySelector("thead tr").children.length;
@@ -32,7 +32,7 @@ function cargarChecklist() {
         });
       });
 
-      agregarFila("tabla-revisar");
+      agregarFilaVacia("tabla-revisar"); // Agregar fila en blanco al final
     });
 
   // Temas frecuentes
@@ -52,7 +52,7 @@ function cargarChecklist() {
         });
       });
 
-      agregarFila("tabla-frecuentes");
+      agregarFilaVacia("tabla-frecuentes");
     });
 
   // Fixes + Fecha del próximo paquete
@@ -74,7 +74,7 @@ function cargarChecklist() {
         });
       });
 
-      agregarFila("tabla-fixes");
+      agregarFilaVacia("tabla-fixes");
     });
 }
 
@@ -103,6 +103,7 @@ function guardarChecklist() {
     .then(respuesta => {
       if (respuesta.resultado === "ok") {
         alert("✅ Checklist guardado correctamente.");
+        cargarChecklist(); // Refrescar con nueva fila vacía
       } else {
         alert("⚠️ Ocurrió un error al guardar: " + respuesta.mensaje);
       }
@@ -131,6 +132,7 @@ function obtenerDatosDeTabla(idTabla) {
 
   return filas;
 }
+
 
 
 
