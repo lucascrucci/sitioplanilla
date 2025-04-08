@@ -1,13 +1,17 @@
-const URL_API = "AKfycbyAHkYacvU6fR46i6qnW01yY1vOxNLRycAf3xInYmazVsr3xI-XNyaAtwivNe8E_X22";
+const URL_API = "https://script.google.com/macros/s/AKfycbyAHkYacvU6fR46i6qnW01yY1vOxNLRycAf3xInYmazVsr3xI-XNyaAtwivNe8E_X22/exec";
 
-// checklist.js
-
+// Agrega una fila editable al final de una tabla
 function agregarFila(idTabla) {
   const tabla = document.getElementById(idTabla);
+  if (!tabla) return;
+
   const tbody = tabla.querySelector("tbody");
+  const thead = tabla.querySelector("thead");
+  if (!thead) return;
+
+  const columnas = thead.querySelector("tr").children.length;
   const fila = document.createElement("tr");
 
-  const columnas = tabla.querySelector("thead tr").children.length;
   for (let i = 0; i < columnas; i++) {
     const celda = document.createElement("td");
     celda.contentEditable = "true";
@@ -17,6 +21,7 @@ function agregarFila(idTabla) {
   tbody.appendChild(fila);
 }
 
+// Carga los datos desde el backend
 function cargarChecklist() {
   // Temas a revisar
   fetch(`${URL_API}?tipo=leerTemasRevisar`)
@@ -37,7 +42,7 @@ function cargarChecklist() {
         tbody.appendChild(tr);
       });
 
-      agregarFila("tabla-revisar"); // Agrega la fila vacía editable
+      agregarFila("tabla-revisar");
     });
 
   // Temas frecuentes
@@ -59,10 +64,10 @@ function cargarChecklist() {
         tbody.appendChild(tr);
       });
 
-      agregarFila("tabla-frecuentes"); // Agrega la fila vacía editable
+      agregarFila("tabla-frecuentes");
     });
 
-  // Fixes + fecha
+  // Fixes + Fecha del próximo paquete
   fetch(`${URL_API}?tipo=leerFixes`)
     .then(res => res.json())
     .then(data => {
@@ -84,14 +89,15 @@ function cargarChecklist() {
         tbody.appendChild(tr);
       });
 
-      agregarFila("tabla-fixes"); // Agrega la fila vacía editable
+      agregarFila("tabla-fixes");
     });
 }
 
+// Botón de guardar (a implementar más adelante)
 function guardarChecklist() {
-  // Implementación posterior
   alert("Checklist guardado correctamente (funcionalidad pendiente de implementar)");
 }
+
 
 
 
