@@ -1,18 +1,21 @@
-// 📥 Cargar datos del checklist desde la hoja
 function cargarChecklist() {
   // Temas a revisar
   fetch(`${URL_API}?tipo=leerTemasRevisar`)
     .then(res => res.json())
     .then(data => {
       const tabla = document.getElementById("tabla-revisar");
-      tabla.innerHTML = "<tr><th>Temas a revisar</th><th>Entregas</th></tr>";
+      const tbody = tabla.querySelector("tbody");
+      tbody.innerHTML = ""; // Limpiar solo el cuerpo
+
       data.forEach(fila => {
-        const tr = tabla.insertRow();
+        const tr = document.createElement("tr");
         fila.forEach(celda => {
-          const td = tr.insertCell();
+          const td = document.createElement("td");
           td.textContent = celda;
           td.contentEditable = "true";
+          tr.appendChild(td);
         });
+        tbody.appendChild(tr);
       });
     });
 
@@ -21,18 +24,18 @@ function cargarChecklist() {
     .then(res => res.json())
     .then(data => {
       const tabla = document.getElementById("tabla-frecuentes");
-      tabla.innerHTML = `
-        <tr>
-          <th>Tema</th><th>Responsable</th><th>Nivel</th><th>Analista</th>
-          <th>Fecha de entrega</th><th>Entrega prevista</th><th>Invgate</th><th>Comentarios</th>
-        </tr>`;
+      const tbody = tabla.querySelector("tbody");
+      tbody.innerHTML = "";
+
       data.forEach(fila => {
-        const tr = tabla.insertRow();
+        const tr = document.createElement("tr");
         fila.forEach(celda => {
-          const td = tr.insertCell();
+          const td = document.createElement("td");
           td.textContent = celda;
           td.contentEditable = "true";
+          tr.appendChild(td);
         });
+        tbody.appendChild(tr);
       });
     });
 
@@ -41,18 +44,22 @@ function cargarChecklist() {
     .then(res => res.json())
     .then(data => {
       const tabla = document.getElementById("tabla-fixes");
+      const tbody = tabla.querySelector("tbody");
       const inputFecha = document.getElementById("fecha-paquete");
 
       inputFecha.value = data.fecha || "";
 
-      tabla.innerHTML = `<tr><th>Inventario de fixes proximo paquete</th><th>Comentarios</th></tr>`;
+      tbody.innerHTML = "";
+
       data.fixes.forEach(fila => {
-        const tr = tabla.insertRow();
+        const tr = document.createElement("tr");
         fila.forEach(celda => {
-          const td = tr.insertCell();
+          const td = document.createElement("td");
           td.textContent = celda;
           td.contentEditable = "true";
+          tr.appendChild(td);
         });
+        tbody.appendChild(tr);
       });
     })
     .catch(err => console.warn("No se pudo leer la tabla de fixes todavía (no implementada)"));
