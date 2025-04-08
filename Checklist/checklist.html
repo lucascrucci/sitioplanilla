@@ -24,6 +24,7 @@
       <tbody></tbody>
     </table>
     <button onclick="agregarFilaVacia('tabla-revisar')">Agregar Fila</button>
+    <button onclick="eliminarFilaSeleccionada('tabla-revisar')">🗑️ Eliminar Fila Seleccionada</button>
   </section>
 
   <section>
@@ -44,6 +45,7 @@
       <tbody></tbody>
     </table>
     <button onclick="agregarFilaVacia('tabla-frecuentes')">Agregar Fila</button>
+    <button onclick="eliminarFilaSeleccionada('tabla-frecuentes')">🗑️ Eliminar Fila Seleccionada</button>
   </section>
 
   <section>
@@ -62,6 +64,7 @@
       <tbody></tbody>
     </table>
     <button onclick="agregarFilaVacia('tabla-fixes')">Agregar Fila</button>
+    <button onclick="eliminarFilaSeleccionada('tabla-fixes')">🗑️ Eliminar Fila Seleccionada</button>
   </section>
 
   <button type="button" onclick="guardarChecklist()">💾 Guardar Checklist</button>
@@ -69,6 +72,7 @@
   <script>
     window.onload = () => {
       inicializarTablas(); // NO cargamos datos, solo mostramos tablas vacías
+      inicializarSeleccionDeFilas(); // Habilita selección
     };
   </script>
   <script src="checklist.js"></script>

@@ -1,22 +1,37 @@
-const URL_API = "https://script.google.com/macros/s/AKfycbyAHkYacvU6fR46i6qnW01yY1vOxNLRycAf3xInYmazVsr3xI-XNyaAtwivNe8E_X22/exec";
+// Al cargar la página, cargamos datos desde localStorage (si existen)
+function inicializarTablas() {
+  const datos = JSON.parse(localStorage.getItem("datosChecklist"));
+  if (!datos) return;
 
-// Agrega una fila editable al final de una tabla
-function agregarFilaVacia(idTabla) {
-  const tabla = document.getElementById(idTabla);
-  const tbody = tabla.querySelector("tbody");
-  const columnas = tabla.querySelector("thead tr").children.length;
-  const fila = tbody.insertRow();
-
-  for (let i = 0; i < columnas; i++) {
-    const celda = fila.insertCell();
-    celda.contentEditable = "true";
-  }
+  cargarDatosEnTabla("tabla-revisar", datos.revisar);
+  cargarDatosEnTabla("tabla-frecuentes", datos.frecuentes);
+  cargarDatosEnTabla("tabla-fixes", datos.fixes);
+  document.getElementById("fecha-paquete").value = datos.fechaPaquete || "";
 }
 
-function inicializarTablas() {
-  agregarFilaVacia("tabla-revisar");
-  agregarFilaVacia("tabla-frecuentes");
-  agregarFilaVacia("tabla-fixes");
+function agregarFilaVacia(idTabla) {
+  const tabla = document.getElementById(idTabla).getElementsByTagName("tbody")[0];
+  const fila = tabla.insertRow();
+
+  let cantidadCeldas = 0;
+  switch (idTabla) {
+    case "tabla-revisar":
+      cantidadCeldas = 2;
+      break;
+    case "tabla-frecuentes":
+      cantidadCeldas = 8;
+      break;
+    case "tabla-fixes":
+      cantidadCeldas = 2;
+      break;
+  }
+
+  for (let i = 0; i < cantidadCeldas; i++) {
+    const celda = fila.insertCell();
+    const input = document.createElement("input");
+    input.type = "text";
+    celda.appendChild(input);
+  }
 }
 
 function guardarChecklist() {
@@ -25,53 +40,76 @@ function guardarChecklist() {
   const fixes = obtenerDatosDeTabla("tabla-fixes");
   const fechaPaquete = document.getElementById("fecha-paquete").value;
 
-  const payload = {
-    tipo: "guardarChecklist",
+  const datos = {
     revisar,
     frecuentes,
     fixes,
-    fecha: fechaPaquete
+    fechaPaquete
   };
 
-  fetch(URL_API, {
-    method: "POST",
-    body: JSON.stringify(payload),
-    headers: {
-      "Content-Type": "application/json"
-    }
-  })
-    .then(res => res.json())
-    .then(respuesta => {
-      if (respuesta.resultado === "ok") {
-        alert("✅ Checklist guardado correctamente.");
-      } else {
-        alert("⚠️ Error al guardar: " + respuesta.mensaje);
-      }
-    })
-    .catch(err => {
-      console.error(err);
-      alert("❌ Error al guardar el checklist.");
-    });
+  localStorage.setItem("datosChecklist", JSON.stringify(datos));
+  alert("✅ Checklist guardado localmente");
 }
 
-// Función auxiliar para tomar los datos de una tabla
 function obtenerDatosDeTabla(idTabla) {
-  const tabla = document.getElementById(idTabla);
-  const filas = [];
+  const tabla = document.getElementById(idTabla).getElementsByTagName("tbody")[0];
+  const datos = [];
 
-  const tbody = tabla.querySelector("tbody");
-  const tr = tbody.querySelectorAll("tr");
-
-  for (let i = 0; i < tr.length; i++) {
-    const celdas = Array.from(tr[i].cells).map(td => td.textContent.trim());
-    const filaVacia = celdas.every(cell => cell === "");
-    if (!filaVacia) {
-      filas.push(celdas);
+  for (let fila of tabla.rows) {
+    const filaDatos = [];
+    for (let celda of fila.cells) {
+      const input = celda.querySelector("input");
+      filaDatos.push(input ? input.value : "");
     }
+    datos.push(filaDatos);
   }
 
-  return filas;
+  return datos;
 }
+
+function cargarDatosEnTabla(idTabla, datos) {
+  const tabla = document.getElementById(idTabla).getElementsByTagName("tbody")[0];
+  tabla.innerHTML = ""; // Limpia la tabla antes de insertar
+
+  datos.forEach(filaDatos => {
+    const fila = tabla.insertRow();
+    filaDatos.forEach(valor => {
+      const celda = fila.insertCell();
+      const input = document.createElement("input");
+      input.type = "text";
+      input.value = valor;
+      celda.appendChild(input);
+    });
+  });
+}
+
+// Al cargar, hacé que se pueda seleccionar una fila con clic
+function inicializarSeleccionDeFilas() {
+  document.querySelectorAll("tbody").forEach(tbody => {
+    tbody.addEventListener("click", e => {
+      const fila = e.target.closest("tr");
+      if (!fila) return;
+
+      // Desmarcar cualquier otra fila seleccionada
+      tbody.querySelectorAll("tr").forEach(tr => tr.classList.remove("seleccionada"));
+
+      // Marcar la fila actual
+      fila.classList.add("seleccionada");
+    });
+  });
+}
+
+// Eliminar la fila seleccionada de una tabla
+function eliminarFilaSeleccionada(idTabla) {
+  const tabla = document.getElementById(idTabla);
+  const filaSeleccionada = tabla.querySelector("tbody tr.seleccionada");
+  if (filaSeleccionada) {
+    filaSeleccionada.remove();
+  } else {
+    alert("Seleccioná una fila para eliminar.");
+  }
+}
+
 
 
 
