@@ -7,7 +7,7 @@ function cargarChecklist() {
     .then(data => {
       const tabla = document.getElementById("tabla-revisar");
       const tbody = tabla.querySelector("tbody");
-      tbody.innerHTML = ""; // Limpiar solo el cuerpo
+      tbody.innerHTML = "";
 
       data.forEach(fila => {
         const tr = document.createElement("tr");
@@ -19,6 +19,15 @@ function cargarChecklist() {
         });
         tbody.appendChild(tr);
       });
+
+      // Agregar fila vacía editable
+      const filaVacia = document.createElement("tr");
+      for (let i = 0; i < 2; i++) {
+        const td = document.createElement("td");
+        td.contentEditable = "true";
+        filaVacia.appendChild(td);
+      }
+      tbody.appendChild(filaVacia);
     });
 
   // Temas frecuentes
@@ -39,6 +48,15 @@ function cargarChecklist() {
         });
         tbody.appendChild(tr);
       });
+
+      // Fila vacía editable (8 columnas)
+      const filaVacia = document.createElement("tr");
+      for (let i = 0; i < 8; i++) {
+        const td = document.createElement("td");
+        td.contentEditable = "true";
+        filaVacia.appendChild(td);
+      }
+      tbody.appendChild(filaVacia);
     });
 
   // Fixes + fecha
@@ -50,7 +68,6 @@ function cargarChecklist() {
       const inputFecha = document.getElementById("fecha-paquete");
 
       inputFecha.value = data.fecha || "";
-
       tbody.innerHTML = "";
 
       data.fixes.forEach(fila => {
@@ -63,68 +80,19 @@ function cargarChecklist() {
         });
         tbody.appendChild(tr);
       });
+
+      // Fila vacía editable (2 columnas)
+      const filaVacia = document.createElement("tr");
+      for (let i = 0; i < 2; i++) {
+        const td = document.createElement("td");
+        td.contentEditable = "true";
+        filaVacia.appendChild(td);
+      }
+      tbody.appendChild(filaVacia);
     })
     .catch(err => console.warn("No se pudo leer la tabla de fixes todavía (no implementada)"));
 }
 
-// ✅ Agrega fila editable
-function agregarFila(tablaId) {
-  const tabla = document.getElementById(tablaId);
-  const tbody = tabla.querySelector("tbody");
-  const nuevaFila = tbody.insertRow();
-
-  const columnas = tabla.querySelectorAll("thead th").length;
-  for (let i = 0; i < columnas; i++) {
-    const celda = nuevaFila.insertCell();
-    celda.contentEditable = "true";
-    celda.innerText = "";
-  }
-}
-
-// ✅ Guarda todas las tablas
-function guardarChecklist() {
-  const revisar = obtenerDatosDesdeTabla("tabla-revisar");
-  const frecuentes = obtenerDatosDesdeTabla("tabla-frecuentes");
-  const fixes = obtenerDatosDesdeTabla("tabla-fixes");
-  const fechaFixes = document.getElementById("fecha-paquete").value;
-
-  const payload = {
-    tipo: "guardarChecklistCompleto",
-    revisar,
-    frecuentes,
-    fixes,
-    fechaFixes
-  };
-
-  fetch(URL_API, {
-    method: "POST",
-    body: JSON.stringify(payload),
-    headers: { "Content-Type": "application/json" }
-  })
-    .then(res => res.json())
-    .then(data => {
-      alert("✅ Checklist guardado correctamente");
-    })
-    .catch(err => {
-      console.error(err);
-      alert("❌ Error al guardar el checklist");
-    });
-}
-
-// ✅ Extrae los datos de la tabla como array de arrays
-function obtenerDatosDesdeTabla(tablaId) {
-  const tabla = document.getElementById(tablaId);
-  const filas = tabla.querySelectorAll("tbody tr");
-  const datos = [];
-
-  filas.forEach(fila => {
-    const celdas = fila.querySelectorAll("td");
-    const filaDatos = Array.from(celdas).map(td => td.innerText.trim());
-    datos.push(filaDatos);
-  });
-
-  return datos;
-}
 
 
 
