@@ -13,69 +13,10 @@ function agregarFilaVacia(idTabla) {
   }
 }
 
-// Carga los datos desde el backend
-function cargarChecklist() {
-  // Temas a revisar
-  fetch(`${URL_API}?tipo=leerTemasRevisar`)
-    .then(res => res.json())
-    .then(data => {
-      const tabla = document.getElementById("tabla-revisar");
-      const tbody = tabla.querySelector("tbody");
-      tbody.innerHTML = "";
-
-      data.forEach(fila => {
-        const nuevaFila = tbody.insertRow();
-        fila.forEach(celda => {
-          const nuevaCelda = nuevaFila.insertCell();
-          nuevaCelda.textContent = celda;
-          nuevaCelda.contentEditable = "true";
-        });
-      });
-
-      agregarFilaVacia("tabla-revisar"); // Agregar fila en blanco al final
-    });
-
-  // Temas frecuentes
-  fetch(`${URL_API}?tipo=leerChecklist`)
-    .then(res => res.json())
-    .then(data => {
-      const tabla = document.getElementById("tabla-frecuentes");
-      const tbody = tabla.querySelector("tbody");
-      tbody.innerHTML = "";
-
-      data.forEach(fila => {
-        const nuevaFila = tbody.insertRow();
-        fila.forEach(celda => {
-          const nuevaCelda = nuevaFila.insertCell();
-          nuevaCelda.textContent = celda;
-          nuevaCelda.contentEditable = "true";
-        });
-      });
-
-      agregarFilaVacia("tabla-frecuentes");
-    });
-
-  // Fixes + Fecha del próximo paquete
-  fetch(`${URL_API}?tipo=leerFixes`)
-    .then(res => res.json())
-    .then(data => {
-      const tabla = document.getElementById("tabla-fixes");
-      const tbody = tabla.querySelector("tbody");
-      const inputFecha = document.getElementById("fecha-paquete");
-      inputFecha.value = data.fecha || "";
-      tbody.innerHTML = "";
-
-      data.fixes.forEach(fila => {
-        const nuevaFila = tbody.insertRow();
-        fila.forEach(celda => {
-          const nuevaCelda = nuevaFila.insertCell();
-          nuevaCelda.textContent = celda;
-          nuevaCelda.contentEditable = "true";
-        });
-      });
-
-      agregarFilaVacia("tabla-fixes");
-    });
+function inicializarTablas() {
+  agregarFilaVacia("tabla-revisar");
+  agregarFilaVacia("tabla-frecuentes");
+  agregarFilaVacia("tabla-fixes");
 }
 
 function guardarChecklist() {
@@ -103,9 +44,8 @@ function guardarChecklist() {
     .then(respuesta => {
       if (respuesta.resultado === "ok") {
         alert("✅ Checklist guardado correctamente.");
-        cargarChecklist(); // Refrescar con nueva fila vacía
       } else {
-        alert("⚠️ Ocurrió un error al guardar: " + respuesta.mensaje);
+        alert("⚠️ Error al guardar: " + respuesta.mensaje);
       }
     })
     .catch(err => {
@@ -132,6 +72,7 @@ function obtenerDatosDeTabla(idTabla) {
 
   return filas;
 }
+
 
 
 
