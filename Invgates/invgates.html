@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Invgates En Progreso</title>
+  <link rel="stylesheet" href="invgates.css" />
+</head>
+<body>
+  <header class="barra-superior">
+    <a href="../index.html" class="casita">🏠</a>
+    <div class="botones-funciones">
+      <button onclick="sincronizarInvgates()">Sincronizar Invgates</button>
+      <button onclick="agregarInvgates()">Agregar Invgates</button>
+      <button onclick="actualizarEstados()">Actualizar Estados</button>
+      <button onclick="moverCasos()">Mover Casos</button>
+    </div>
+  </header>
+
+  <main>
+    <h1>Invgates En Progreso</h1>
+    <div id="tabla-container">Cargando datos...</div>
+  </main>
+
+  <script src="invgates.js"></script>
+</body>
+</html>
+
+

@@ -1,0 +1,165 @@
+body {
+    background-color: #2b2b2b;
+    color: white;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .barra-superior {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #1f1f1f;
+    padding: 10px 20px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.4);
+  }
+  
+  .casita {
+    font-size: 24px;
+    text-decoration: none;
+    color: white;
+  }
+  
+  .botones-funciones {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    flex: 1;
+  }
+  
+  .botones-funciones button {
+    background-color: #444;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 6px;
+    font-size: 14px;
+    cursor: pointer;
+  }
+  
+  .botones-funciones button:hover {
+    background-color: #666;
+  }
+  
+  main {
+    padding: 20px;
+    text-align: center;
+  }
+  
+  h1 {
+    margin-bottom: 20px;
+  }
+  
+
+  /* Estilos para la tabla */
+  
+  .contenedor-tabla {
+    max-width: 100%;
+    overflow-x: auto;
+    background-color: white;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .mi-tabla {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px auto;
+    font-size: 14px;
+    background-color: #f2f2f2;
+    color: #222;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 0 10px rgba(0,0,0,0.4);
+  }
+  
+  .mi-tabla thead {
+    background-color: #dcdcdc; /* Header - gris claro */
+  }
+  
+  .mi-tabla thead th {
+    padding: 12px;
+    text-align: left;
+    font-weight: bold;
+    border-bottom: 2px solid #bbb;
+  }
+  
+  .mi-tabla tbody tr:nth-child(even) {
+    background-color: #eeeeee; /* Filas pares */
+  }
+  
+  .mi-tabla tbody tr:nth-child(odd) {
+    background-color: #ffffff; /* Filas impares */
+  }
+  
+  .mi-tabla tbody td {
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+    white-space: nowrap;         /* Evita saltos de línea */
+    overflow: hidden;            /* Oculta el contenido que se desborda */
+    text-overflow: ellipsis;     /* Muestra "..." si el texto es muy largo */
+    max-width: 200px;            /* Ajustá el ancho máximo de las celdas */
+  }
+  
+  .mi-tabla tbody tr {
+    height: 40px;                /* Altura fija para las filas */
+  }
+  
+
+  /* Aplica solo a la segunda columna (Asunto) de todas las filas */
+.mi-tabla td:nth-child(2),
+.mi-tabla th:nth-child(2) {
+  width: 200px; /* Ajustalo a lo que necesites */
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.mi-tabla td:nth-child(5),
+.mi-tabla th:nth-child(5) {
+  display: none;
+}
+.mi-tabla td:nth-child(6),
+.mi-tabla th:nth-child(6) {
+  display: none;
+}
+
+.mi-tabla td:nth-child(4),
+.mi-tabla th:nth-child(4) {
+  width: 100px; /* Ajustalo a lo que necesites */
+  max-width: 100px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.mi-tabla td:nth-child(12),
+.mi-tabla th:nth-child(12) {
+  width: 100px; /* Ajustalo a lo que necesites */
+  max-width: 100px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.mi-tabla td:nth-child(14),
+.mi-tabla th:nth-child(14) {
+  width: 250px; /* Ajustalo a lo que necesites */
+  max-width: 250px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.mi-tabla td:nth-child(15),
+.mi-tabla th:nth-child(15) {
+  width: 120px; /* Ajustalo a lo que necesites */
+  max-width: 120px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Checklist</title>
+  <link rel="stylesheet" href="checklist.css" />
+</head>
+<body>
+  <header>
+    <a href="../index.html" class="home-button">🏠</a>
+    <h1>Checklist de Soporte</h1>
+  </header>
+
+  <section>
+    <h2>Temas a Revisar</h2>
+    <table id="tabla-revisar">
+      <thead>
+        <tr>
+          <th>Temas a revisar</th>
+          <th>Entregas</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr contenteditable="true">
+          <td></td>
+          <td></td>
+        </tr>
+      </tbody>
+    </table>
+    <button onclick="agregarFila('tabla-revisar')">Agregar Fila</button>
+  </section>
+
+  <section>
+    <h2>Temas Frecuentes</h2>
+    <table id="tabla-frecuentes">
+      <thead>
+        <tr>
+          <th>Tema</th>
+          <th>Responsable</th>
+          <th>Nivel</th>
+          <th>Analista</th>
+          <th>Fecha de entrega</th>
+          <th>Entrega prevista</th>
+          <th>Invgate</th>
+          <th>Comentarios</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr contenteditable="true">
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+      </tbody>
+    </table>
+    <button onclick="agregarFila('tabla-frecuentes')">Agregar Fila</button>
+  </section>
+
+  <section>
+    <h2>Inventario de Fixes - Próximo Paquete</h2>
+    <div class="fecha-paquete">
+      <label for="fecha-paquete">Fecha del próximo paquete: </label>
+      <input type="text" id="fecha-paquete" placeholder="dd/mm/aaaa" />
+    </div>
+    <table id="tabla-fixes">
+      <thead>
+        <tr>
+          <th>Inventario de fixes próximo paquete</th>
+          <th>Comentarios</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr contenteditable="true">
+          <td></td>
+          <td></td>
+        </tr>
+      </tbody>
+    </table>
+    <button onclick="agregarFila('tabla-fixes')">Agregar Fila</button>
+  </section>
+
+  <button onclick="guardarChecklist()">💾 Guardar Checklist</button>
+
+  <script src="checklist.js"></script>
+</body>
+</html>
+
+
