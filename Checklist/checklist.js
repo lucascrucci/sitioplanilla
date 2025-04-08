@@ -1,73 +1,63 @@
-// ✅ checklist.js
-
-// 🌐 URL del Web App desplegado (modo ejecución como tu usuario)
-const URL_API = 'https://script.google.com/macros/s/AKfycbyAHkYacvU6fR46i6qnW01yY1vOxNLRycAf3xInYmazVsr3xI-XNyaAtwivNe8E_X22/exec';
-
-// ➕ Agregar una nueva fila editable en la tabla indicada
-function agregarFila(idTabla) {
-  const tabla = document.getElementById(idTabla);
-  const fila = tabla.insertRow();
-  const columnas = tabla.rows[0].cells.length;
-
-  for (let i = 0; i < columnas; i++) {
-    const celda = fila.insertCell();
-    celda.contentEditable = "true";
-  }
-}
-
-// 💾 Guardar los datos del checklist en la hoja
-function guardarChecklist() {
-  const revisar = obtenerDatosTabla("tabla-revisar");
-  const frecuentes = obtenerDatosTabla("tabla-frecuentes");
-  const fixes = obtenerDatosTabla("tabla-fixes");
-  const fechaFixes = document.getElementById("fecha-paquete").value.trim();
-
-  const payload = {
-    tipo: "guardarChecklist",
-    revisar,
-    frecuentes,
-    fixes,
-    fechaFixes
-  };
-
-  // ✅ POST limpio (sin callback) + parseo como texto
-  fetch(URL_API, {
-    method: "POST",
-    body: JSON.stringify(payload),
-    headers: {
-      "Content-Type": "application/json"
-    }
-  })
-  .then(response => response.json())
-  .then(data => {
-    if (data.status === "OK") {
-      alert("✅ Checklist guardado correctamente.");
-    } else {
-      alert("❌ Ocurrió un error al guardar el checklist.");
-      console.error("Respuesta inesperada:", data);
-    }
-  })  
-    .catch(error => {
-      console.error("❌ Error al guardar checklist:", error);
-      alert("❌ Ocurrió un error al guardar el checklist.");
+// 📥 Cargar datos del checklist desde la hoja
+function cargarChecklist() {
+  // Temas a revisar
+  fetch(`${URL_API}?tipo=leerTemasRevisar`)
+    .then(res => res.json())
+    .then(data => {
+      const tabla = document.getElementById("tabla-revisar");
+      tabla.innerHTML = "<tr><th>Temas a revisar</th><th>Entregas</th></tr>";
+      data.forEach(fila => {
+        const tr = tabla.insertRow();
+        fila.forEach(celda => {
+          const td = tr.insertCell();
+          td.textContent = celda;
+          td.contentEditable = "true";
+        });
+      });
     });
+
+  // Temas frecuentes
+  fetch(`${URL_API}?tipo=leerChecklist`)
+    .then(res => res.json())
+    .then(data => {
+      const tabla = document.getElementById("tabla-frecuentes");
+      tabla.innerHTML = `
+        <tr>
+          <th>Tema</th><th>Responsable</th><th>Nivel</th><th>Analista</th>
+          <th>Fecha de entrega</th><th>Entrega prevista</th><th>Invgate</th><th>Comentarios</th>
+        </tr>`;
+      data.forEach(fila => {
+        const tr = tabla.insertRow();
+        fila.forEach(celda => {
+          const td = tr.insertCell();
+          td.textContent = celda;
+          td.contentEditable = "true";
+        });
+      });
+    });
+
+  // Fixes + fecha
+  fetch(`${URL_API}?tipo=leerFixes`)
+    .then(res => res.json())
+    .then(data => {
+      const tabla = document.getElementById("tabla-fixes");
+      const inputFecha = document.getElementById("fecha-paquete");
+
+      inputFecha.value = data.fecha || "";
+
+      tabla.innerHTML = `<tr><th>Inventario de fixes proximo paquete</th><th>Comentarios</th></tr>`;
+      data.fixes.forEach(fila => {
+        const tr = tabla.insertRow();
+        fila.forEach(celda => {
+          const td = tr.insertCell();
+          td.textContent = celda;
+          td.contentEditable = "true";
+        });
+      });
+    })
+    .catch(err => console.warn("No se pudo leer la tabla de fixes todavía (no implementada)"));
 }
 
-// 📋 Obtener todos los datos editados de una tabla (salta la fila 0 que es el header)
-function obtenerDatosTabla(idTabla) {
-  const tabla = document.getElementById(idTabla);
-  const datos = [];
-
-  for (let i = 1; i < tabla.rows.length; i++) {
-    const fila = [];
-    for (let j = 0; j < tabla.rows[i].cells.length; j++) {
-      fila.push(tabla.rows[i].cells[j].innerText.trim());
-    }
-    datos.push(fila);
-  }
-
-  return datos;
-}
 
 
 

@@ -22,13 +22,10 @@
         </tr>
       </thead>
       <tbody>
-        <tr contenteditable="true">
-          <td></td>
-          <td></td>
-        </tr>
+        <!-- Las filas se agregarán dinámicamente -->
       </tbody>
     </table>
-    <button onclick="agregarFila('tabla-revisar')">Agregar Fila</button>
+    <button type="button" onclick="agregarFila('tabla-revisar')">Agregar Fila</button>
   </section>
 
   <section>
@@ -47,26 +44,17 @@
         </tr>
       </thead>
       <tbody>
-        <tr contenteditable="true">
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
+        <!-- Las filas se agregarán dinámicamente -->
       </tbody>
     </table>
-    <button onclick="agregarFila('tabla-frecuentes')">Agregar Fila</button>
+    <button type="button" onclick="agregarFila('tabla-frecuentes')">Agregar Fila</button>
   </section>
 
   <section>
     <h2>Inventario de Fixes - Próximo Paquete</h2>
     <div class="fecha-paquete">
       <label for="fecha-paquete">Fecha del próximo paquete: </label>
-      <input type="text" id="fecha-paquete" placeholder="dd/mm/aaaa" />
+      <input type="date" id="fecha-paquete" />
     </div>
     <table id="tabla-fixes">
       <thead>
@@ -76,19 +64,17 @@
         </tr>
       </thead>
       <tbody>
-        <tr contenteditable="true">
-          <td></td>
-          <td></td>
-        </tr>
+        <!-- Las filas se agregarán dinámicamente -->
       </tbody>
     </table>
-    <button onclick="agregarFila('tabla-fixes')">Agregar Fila</button>
+    <button type="button" onclick="agregarFila('tabla-fixes')">Agregar Fila</button>
   </section>
 
-  <button onclick="guardarChecklist()">💾 Guardar Checklist</button>
+  <button type="button" onclick="guardarChecklist()">💾 Guardar Checklist</button>
 
   <script src="checklist.js"></script>
 </body>
 </html>
+
 
 
