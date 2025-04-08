@@ -3,22 +3,13 @@ const URL_API = "https://script.google.com/macros/s/AKfycbyAHkYacvU6fR46i6qnW01y
 // Agrega una fila editable al final de una tabla
 function agregarFila(idTabla) {
   const tabla = document.getElementById(idTabla);
-  if (!tabla) return;
-
-  const tbody = tabla.querySelector("tbody");
-  const thead = tabla.querySelector("thead");
-  if (!thead) return;
-
-  const columnas = thead.querySelector("tr").children.length;
-  const fila = document.createElement("tr");
+  const fila = tabla.insertRow();
+  const columnas = tabla.rows[0].cells.length;
 
   for (let i = 0; i < columnas; i++) {
-    const celda = document.createElement("td");
+    const celda = fila.insertCell();
     celda.contentEditable = "true";
-    fila.appendChild(celda);
   }
-
-  tbody.appendChild(fila);
 }
 
 // Carga los datos desde el backend
@@ -28,18 +19,15 @@ function cargarChecklist() {
     .then(res => res.json())
     .then(data => {
       const tabla = document.getElementById("tabla-revisar");
-      const tbody = tabla.querySelector("tbody");
-      tbody.innerHTML = "";
+      tabla.innerHTML = tabla.rows[0].outerHTML; // Deja solo encabezado
 
       data.forEach(fila => {
-        const tr = document.createElement("tr");
+        const nuevaFila = tabla.insertRow();
         fila.forEach(celda => {
-          const td = document.createElement("td");
-          td.textContent = celda;
-          td.contentEditable = "true";
-          tr.appendChild(td);
+          const nuevaCelda = nuevaFila.insertCell();
+          nuevaCelda.textContent = celda;
+          nuevaCelda.contentEditable = "true";
         });
-        tbody.appendChild(tr);
       });
 
       agregarFila("tabla-revisar");
@@ -50,18 +38,15 @@ function cargarChecklist() {
     .then(res => res.json())
     .then(data => {
       const tabla = document.getElementById("tabla-frecuentes");
-      const tbody = tabla.querySelector("tbody");
-      tbody.innerHTML = "";
+      tabla.innerHTML = tabla.rows[0].outerHTML;
 
       data.forEach(fila => {
-        const tr = document.createElement("tr");
+        const nuevaFila = tabla.insertRow();
         fila.forEach(celda => {
-          const td = document.createElement("td");
-          td.textContent = celda;
-          td.contentEditable = "true";
-          tr.appendChild(td);
+          const nuevaCelda = nuevaFila.insertCell();
+          nuevaCelda.textContent = celda;
+          nuevaCelda.contentEditable = "true";
         });
-        tbody.appendChild(tr);
       });
 
       agregarFila("tabla-frecuentes");
@@ -72,31 +57,76 @@ function cargarChecklist() {
     .then(res => res.json())
     .then(data => {
       const tabla = document.getElementById("tabla-fixes");
-      const tbody = tabla.querySelector("tbody");
       const inputFecha = document.getElementById("fecha-paquete");
-
       inputFecha.value = data.fecha || "";
-      tbody.innerHTML = "";
+      tabla.innerHTML = tabla.rows[0].outerHTML;
 
       data.fixes.forEach(fila => {
-        const tr = document.createElement("tr");
+        const nuevaFila = tabla.insertRow();
         fila.forEach(celda => {
-          const td = document.createElement("td");
-          td.textContent = celda;
-          td.contentEditable = "true";
-          tr.appendChild(td);
+          const nuevaCelda = nuevaFila.insertCell();
+          nuevaCelda.textContent = celda;
+          nuevaCelda.contentEditable = "true";
         });
-        tbody.appendChild(tr);
       });
 
       agregarFila("tabla-fixes");
     });
 }
 
-// Botón de guardar (a implementar más adelante)
 function guardarChecklist() {
-  alert("Checklist guardado correctamente (funcionalidad pendiente de implementar)");
+  const revisar = obtenerDatosDeTabla("tabla-revisar");
+  const frecuentes = obtenerDatosDeTabla("tabla-frecuentes");
+  const fixes = obtenerDatosDeTabla("tabla-fixes");
+  const fechaPaquete = document.getElementById("fecha-paquete").value;
+
+  const payload = {
+    tipo: "guardarChecklist",
+    revisar,
+    frecuentes,
+    fixes,
+    fecha: fechaPaquete
+  };
+
+  fetch(URL_API, {
+    method: "POST",
+    body: JSON.stringify(payload),
+    headers: {
+      "Content-Type": "application/json"
+    }
+  })
+    .then(res => res.json())
+    .then(respuesta => {
+      if (respuesta.resultado === "ok") {
+        alert("✅ Checklist guardado correctamente.");
+      } else {
+        alert("⚠️ Ocurrió un error al guardar: " + respuesta.mensaje);
+      }
+    })
+    .catch(err => {
+      console.error(err);
+      alert("❌ Error al guardar el checklist.");
+    });
 }
+
+// Función auxiliar para tomar los datos de una tabla
+function obtenerDatosDeTabla(idTabla) {
+  const tabla = document.getElementById(idTabla);
+  const filas = [];
+
+  // Saltar la cabecera (row[0])
+  for (let i = 1; i < tabla.rows.length; i++) {
+    const celdas = Array.from(tabla.rows[i].cells).map(td => td.textContent.trim());
+    const filaVacia = celdas.every(cell => cell === "");
+    if (!filaVacia) {
+      filas.push(celdas);
+    }
+  }
+
+  return filas;
+}
+
+
 
 
 
