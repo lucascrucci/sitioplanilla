@@ -3,8 +3,9 @@ const URL_API = "https://script.google.com/macros/s/AKfycbyAHkYacvU6fR46i6qnW01y
 // Agrega una fila editable al final de una tabla
 function agregarFila(idTabla) {
   const tabla = document.getElementById(idTabla);
-  const fila = tabla.insertRow();
-  const columnas = tabla.rows[0].cells.length;
+  const tbody = tabla.querySelector("tbody");
+  const columnas = tabla.querySelector("thead tr").children.length;
+  const fila = tbody.insertRow();
 
   for (let i = 0; i < columnas; i++) {
     const celda = fila.insertCell();
@@ -19,10 +20,11 @@ function cargarChecklist() {
     .then(res => res.json())
     .then(data => {
       const tabla = document.getElementById("tabla-revisar");
-      tabla.innerHTML = tabla.rows[0].outerHTML; // Deja solo encabezado
+      const tbody = tabla.querySelector("tbody");
+      tbody.innerHTML = "";
 
       data.forEach(fila => {
-        const nuevaFila = tabla.insertRow();
+        const nuevaFila = tbody.insertRow();
         fila.forEach(celda => {
           const nuevaCelda = nuevaFila.insertCell();
           nuevaCelda.textContent = celda;
@@ -38,10 +40,11 @@ function cargarChecklist() {
     .then(res => res.json())
     .then(data => {
       const tabla = document.getElementById("tabla-frecuentes");
-      tabla.innerHTML = tabla.rows[0].outerHTML;
+      const tbody = tabla.querySelector("tbody");
+      tbody.innerHTML = "";
 
       data.forEach(fila => {
-        const nuevaFila = tabla.insertRow();
+        const nuevaFila = tbody.insertRow();
         fila.forEach(celda => {
           const nuevaCelda = nuevaFila.insertCell();
           nuevaCelda.textContent = celda;
@@ -57,12 +60,13 @@ function cargarChecklist() {
     .then(res => res.json())
     .then(data => {
       const tabla = document.getElementById("tabla-fixes");
+      const tbody = tabla.querySelector("tbody");
       const inputFecha = document.getElementById("fecha-paquete");
       inputFecha.value = data.fecha || "";
-      tabla.innerHTML = tabla.rows[0].outerHTML;
+      tbody.innerHTML = "";
 
       data.fixes.forEach(fila => {
-        const nuevaFila = tabla.insertRow();
+        const nuevaFila = tbody.insertRow();
         fila.forEach(celda => {
           const nuevaCelda = nuevaFila.insertCell();
           nuevaCelda.textContent = celda;
@@ -114,9 +118,11 @@ function obtenerDatosDeTabla(idTabla) {
   const tabla = document.getElementById(idTabla);
   const filas = [];
 
-  // Saltar la cabecera (row[0])
-  for (let i = 1; i < tabla.rows.length; i++) {
-    const celdas = Array.from(tabla.rows[i].cells).map(td => td.textContent.trim());
+  const tbody = tabla.querySelector("tbody");
+  const tr = tbody.querySelectorAll("tr");
+
+  for (let i = 0; i < tr.length; i++) {
+    const celdas = Array.from(tr[i].cells).map(td => td.textContent.trim());
     const filaVacia = celdas.every(cell => cell === "");
     if (!filaVacia) {
       filas.push(celdas);
@@ -125,6 +131,7 @@ function obtenerDatosDeTabla(idTabla) {
 
   return filas;
 }
+
 
 
 
